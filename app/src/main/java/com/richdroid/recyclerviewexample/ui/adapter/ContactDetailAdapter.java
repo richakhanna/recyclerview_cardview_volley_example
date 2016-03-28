@@ -7,15 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.richdroid.recyclerviewexample.R;
+import com.richdroid.recyclerviewexample.model.ContactDetail;
 
 import java.util.List;
-
-import com.richdroid.recyclerviewexample.model.ContactDetail;
 
 /**
  * Created by richa.khanna on 3/18/16.
@@ -39,13 +39,14 @@ public class ContactDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    public static class ContactDetailViewHolder extends RecyclerView.ViewHolder
-            implements View.OnClickListener {
+    public class ContactDetailViewHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener, View.OnLongClickListener {
         private TextView mTVName;
         private TextView mTVEmail;
         private TextView mTVLocation;
         private TextView mTVType;
         private LinearLayout mContainer;
+        private ImageButton mDeleteButton;
 
 
         public ContactDetailViewHolder(View view) {
@@ -55,15 +56,39 @@ public class ContactDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             this.mTVLocation = (TextView) view.findViewById(R.id.tv_location);
             this.mTVType = (TextView) view.findViewById(R.id.tv_type);
             this.mContainer = (LinearLayout) view.findViewById(R.id.contact_layout_container);
+            this.mDeleteButton = (ImageButton) view.findViewById(R.id.button_delete);
+            this.mDeleteButton.setOnClickListener(this);
             view.setOnClickListener(this);
+            view.setOnLongClickListener(this);
         }
 
         @Override
-        public void onClick(View v) {
+        public void onClick(View view) {
             int itemPosition = getAdapterPosition();
-            Toast.makeText(mContext, "You clicked at position " + itemPosition +
-                    " on contact details of : " +
-                    mDatasetList.get(itemPosition).getName(), Toast.LENGTH_SHORT).show();
+            ContactDetail contactDetail = mDatasetList.get(itemPosition);
+
+            switch (view.getId()) {
+                case R.id.button_delete:
+                    mDatasetList.remove(contactDetail);
+                    notifyItemRemoved(itemPosition);
+                    break;
+
+                default:
+                    Toast.makeText(mContext, "You clicked at position " + itemPosition +
+                            " on contact details of : " +
+                            contactDetail.getName(), Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            int itemPosition = getAdapterPosition();
+            if (itemPosition != RecyclerView.NO_POSITION) {
+                ContactDetail contactDetail = mDatasetList.get(itemPosition);
+                contactDetail.setToShowDeleteIcon(true);
+                notifyItemChanged(itemPosition);
+            }
+            return true;
         }
     }
 
@@ -92,6 +117,7 @@ public class ContactDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
         cusHolder.mTVEmail.setText(mDatasetList.get(position).getEmail());
         cusHolder.mTVLocation.setText(mDatasetList.get(position).getLocation());
 
+
         switch (getItemViewType(position)) {
             case PERSON_CONTACT_DETAIL:
                 cusHolder.mTVType.setText("Person");
@@ -99,6 +125,12 @@ public class ContactDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             case ANIMAL_CONTACT_DETAIL:
                 cusHolder.mTVType.setText("Animal");
                 break;
+        }
+
+        if (mDatasetList.get(position).isToShowDeleteIcon()) {
+            cusHolder.mDeleteButton.setVisibility(View.VISIBLE);
+        } else {
+            cusHolder.mDeleteButton.setVisibility(View.GONE);
         }
 
         setEnterAnimation(cusHolder.mContainer, position);

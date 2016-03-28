@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">My Contacts</string>
+    <string name="delete_contact">Delete Contact</string>
 </resources>

@@ -9,6 +9,7 @@ public class ContactDetail {
     private String email;
     private String location;
     private String type;
+    private boolean isToShowDeleteIcon;
 
     public String getName() {
         return name;
@@ -26,4 +27,11 @@ public class ContactDetail {
         return type;
     }
 
+    public boolean isToShowDeleteIcon() {
+        return isToShowDeleteIcon;
+    }
+
+    public void setToShowDeleteIcon(boolean toShowDeleteIcon) {
+        isToShowDeleteIcon = toShowDeleteIcon;
+    }
 }
