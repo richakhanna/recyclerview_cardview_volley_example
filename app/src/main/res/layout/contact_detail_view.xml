@@ -64,12 +64,12 @@
 
                 <ImageButton
                     android:id="@+id/button_delete"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_gravity="top|right"
                     android:layout_marginRight="5dp"
                     android:layout_marginTop="8dp"
-                    android:background="@mipmap/delete_contact"
+                    android:background="@drawable/bg_delete_button"
                     android:contentDescription="@string/delete_contact"
                     android:scaleType="fitXY"
                     android:visibility="gone" />

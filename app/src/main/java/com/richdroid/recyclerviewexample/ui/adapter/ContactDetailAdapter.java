@@ -85,7 +85,15 @@ public class ContactDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             int itemPosition = getAdapterPosition();
             if (itemPosition != RecyclerView.NO_POSITION) {
                 ContactDetail contactDetail = mDatasetList.get(itemPosition);
-                contactDetail.setToShowDeleteIcon(true);
+
+                //If delete button is already shown, hide it by setting flag to false
+                //And the item will be updated when onBindViewHolder will be called.
+                if (contactDetail.isToShowDeleteIcon()) {
+                    contactDetail.setToShowDeleteIcon(false);
+                } else {
+                    contactDetail.setToShowDeleteIcon(true);
+                }
+
                 notifyItemChanged(itemPosition);
             }
             return true;
