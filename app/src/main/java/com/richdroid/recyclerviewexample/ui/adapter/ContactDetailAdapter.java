@@ -163,8 +163,22 @@ public class ContactDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
     private void setEnterAnimation(View viewToAnimate, int position) {
         // If the bound view wasn't previously displayed on screen, it will be animated
         if (position > lastAnimatedItemPosition) {
+            //Animation using xml
             Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.translate_left);
             viewToAnimate.startAnimation(animation);
+
+//            Or Animation using ObjectAnimator
+//            ObjectAnimator anim = ObjectAnimator.ofFloat(viewToAnimate, "translationX", 300, 0);
+//            anim.setDuration(1500);
+//            DecelerateInterpolator decelerateInterpolator = new DecelerateInterpolator(2);
+//            anim.setInterpolator(decelerateInterpolator);
+//            anim.start();
+
+//            Or Animation using setTranslationX
+//            viewToAnimate.setTranslationX(300);
+//            viewToAnimate.animate().translationX(0).
+//                    setInterpolator(new DecelerateInterpolator(2)).setDuration(1500).start();
+
             lastAnimatedItemPosition = position;
         }
     }
